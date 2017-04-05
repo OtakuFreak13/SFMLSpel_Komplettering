@@ -1,0 +1,26 @@
+14/2-17 Vad som gjorts hittillsFunktioner
+
+Jag har kollat på några sfml tutorials på youtube i några timmar samt fått mitt projekt att funka på hemmadatorn 
+och skolans och det kanske funkar min lapptop. 
+Allt projektet gör just nu är en cirkel.
+
+27/2-17
+Spenderat några timmar (mestadel under helgen) till att kolla på tutorials. 
+Gjort lite klasser och hittat några spritesheets som jag troligtvis kommer använda.
+
+Söndag den 5/3 och måndag den 6/3
+Programerade ett fleratal timmar i södnags och från 12:30-03:00 i måndags.
+Har gjort så att fiender spawnas med random liv och damage. De kan dock inte röra sig än.
+Spelaren kan röra sig och om kollision mellan spelaren och fienden uppstår 
+kan spelaren attackera med mellanslag och fienden attackarar då automatiskt i ett bestämmt intervall.
+
+11/3-17
+Jag har programmerat i flera timmar fått så att när spelaren dör så kommer det upp hur många denne dödat och hur långt tid denne överlevt. 
+Håller på med HighScore och Enemy movement.
+
+12/3-17
+Har programmerat från 1430 fram tills 22. 
+Spelet funkar okejish. Har 5 klasser varav player och enemy ärver av entity. 
+Har en klass highscore som sparar alla highscores i en .txt fil och visar upp de 5 bästa när man dött.
+Mina enemies kan inte röra sig vilket jag igentligen ville.
+Har några minnesläckor. 

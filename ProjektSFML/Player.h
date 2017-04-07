@@ -27,7 +27,8 @@ private:
 	bool collided = false;
 	bool wasAttacking = false;
 	bool isAttacking = false;
-
+	sf::Texture smokeTex;
+	sf::Sprite smokeSprite;
 public:
 	Player();
 	~Player();
@@ -38,11 +39,16 @@ public:
 	//void setWasAttacking(int tf);
 	//bool getIsAttacking();
 	//void setIsAttacking(int tf);
+	int poisonTick(int ticks);
+	void poison(int ticks, int damage);
+	bool isPoisoned;
+
 	int attack();	
 	void recevieDamage(int damage);
 	bool death();
 	int getHealth() const;
 	void setHealth();
+	void pushBack(float x, float y);
 
 };
 

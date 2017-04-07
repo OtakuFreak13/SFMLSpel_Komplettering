@@ -10,17 +10,25 @@ Enemy::Enemy() : Entity()
 	std::random_device rd;
 
 	std::default_random_engine *generator = new std::default_random_engine(rd());
-	std::uniform_int_distribution<int> PosXRandDIST(20, 560);
-	std::uniform_int_distribution<int> PosYRandDIST(20, 420);
+	//std::uniform_int_distribution<int> PosXRandDIST(20, 560);
+	//std::uniform_int_distribution<int> PosYRandDIST(20, 420);
 
-
-	int PosXRand = PosXRandDIST(*generator);  // generates number in the range 1..
-	int PosYRand = PosYRandDIST(*generator);  // generates number in the range 1..
+	int PosXRand;
+	int PosYRand;
+	do
+	{
+		std::uniform_int_distribution<int> PosXRandDIST(20, 560);
+		std::uniform_int_distribution<int> PosYRandDIST(20, 420);
+		PosXRand = PosXRandDIST(*generator);
+		PosYRand = PosYRandDIST(*generator);
+	} while (this->bounds(PosXRand, PosYRand));
+	//int PosXRand = PosXRandDIST(*generator);  // generates number in the range 1..
+	//int PosYRand = PosYRandDIST(*generator);  // generates number in the range 1..
 
 	setESpeed(130.0f);
 	enemySpeed = getESpeed();
-	
-	int randPos = rand() % 300 +1;
+
+	int randPos = rand() % 300 + 1;
 	//	setTextureName("Image/goblinsword.png");
 		/*sf::Texture texture;*/
 	if (!texture.loadFromFile("Image/goblinSwordBlue.png"))
@@ -38,9 +46,9 @@ Enemy::Enemy() : Entity()
 	animationSpeed = 0.1f;
 	keyFrameDuration = 0.0f;
 
-	
+
 	std::uniform_int_distribution<int> attackDamageDIST(1, 3);
-	setEAttackDamage( attackDamageDIST(*generator));// (rand() % 3) + 1;
+	setEAttackDamage(attackDamageDIST(*generator));// (rand() % 3) + 1;
 	attackDamage = getEAttackDamage();
 	setEHealth(attackDamageDIST(*generator) * 3);
 	health = getEHealth();//(rand() % 10) + 1;
@@ -49,10 +57,64 @@ Enemy::Enemy() : Entity()
 
 }
 
+Enemy::Enemy(int nr) : Entity()
+{
+
+	srand(time(NULL));
+
+	std::random_device rd;
+
+	std::default_random_engine *generator = new std::default_random_engine(rd());
+	int PosXRand;
+	int PosYRand;
+	do
+	{
+		std::uniform_int_distribution<int> PosXRandDIST(20, 560);
+		std::uniform_int_distribution<int> PosYRandDIST(20, 420);
+		PosXRand = PosXRandDIST(*generator);
+		PosYRand = PosYRandDIST(*generator);
+	} while (this->bounds(PosXRand, PosYRand));
+
+
+
+	//	int PosXRand = PosXRandDIST(*generator);  // generates number in the range 1..
+	//	int PosYRand = PosYRandDIST(*generator);  // generates number in the range 1..
+
+	setESpeed(130.0f);
+	enemySpeed = getESpeed();
+
+	int randPos = rand() % 300 + 1;
+	//	setTextureName("Image/goblinsword.png");
+	/*sf::Texture texture;*/
+	if (!texture.loadFromFile("Image/goblinSwordBlue.png"))
+	{
+		// handle error
+	}
+	//loadTexture();
+	spriteSheet.setTexture(texture);
+	spriteSheet.setTextureRect(sf::IntRect(0, 0, 64, 64));
+	spriteSheet.setPosition(sf::Vector2f(PosXRand, PosYRand));
+	currentKeyFrame = sf::Vector2i(0, 0);
+	keyFrameSize = sf::Vector2i(64, 64);
+	spriteSheetWidth = 7;
+	/*spriteSheetHeight = 4;*/
+	animationSpeed = 0.1f;
+	keyFrameDuration = 0.0f;
+
+
+	std::uniform_int_distribution<int> attackDamageDIST(1, 3);
+	setEAttackDamage(attackDamageDIST(*generator));// (rand() % 3) + 1;
+	attackDamage = getEAttackDamage();
+	setEHealth(attackDamageDIST(*generator) * 3);
+	health = getEHealth();//(rand() % 10) + 1;
+
+	delete generator;
+}
+
 
 Enemy::~Enemy()
 {
-	
+
 }
 
 void Enemy::move(float dt)
@@ -184,75 +246,109 @@ void Enemy::Update(float dt)
 	}
 }
 
-	void Enemy::draw(sf::RenderTarget &target, sf::RenderStates states) const
+void Enemy::draw(sf::RenderTarget &target, sf::RenderStates states) const
+{
+	target.draw(spriteSheet, states);
+}
+
+sf::Sprite Enemy::getSpriteSheet()
+{
+	return this->spriteSheet;
+}
+
+void Enemy::setCollided(int tf)
+{
+	this->collided = tf;
+}
+
+//bool Enemy::getWasAttacking()
+//{
+//	return this->wasAttacking;
+//}
+
+//void Enemy::setWasAttacking(int tf)
+//{
+//	this->wasAttacking = tf;
+//}
+
+//bool Enemy::getIsAttacking()
+//{
+//	return this->isAttacking;
+//}
+
+//void Enemy::setIsAttacking(int tf)
+//{
+//	this->isAttacking = tf;
+//}
+
+int Enemy::attack()
+{
+	//animate attack
+	std::random_device rd;
+
+	std::default_random_engine *generator = new std::default_random_engine(rd());
+	std::uniform_int_distribution<int> attackDIST(0, 10);
+
+	int randNum = attackDIST(*generator);
+	delete generator;
+
+	return attackDamage * randNum / 2.5;
+}
+
+void Enemy::recevieDamage(int damage)
+{
+	this->health -= damage;
+	cout << damage << " Amount of damage enemy has revcieved! Remaining enemy health: " << this->health << endl;
+
+	this->death();
+}
+
+bool Enemy::death() const
+{
+	bool dead = false;
+	if (this->health <= 0)
 	{
-		target.draw(spriteSheet, states);
+		dead = true;
 	}
 
-	sf::Sprite Enemy::getSpriteSheet()
+	return dead;
+}
+
+int Enemy::getHealth()
+{
+	return this->health;
+}
+
+bool Enemy::bounds(int x, int y)
+{
+	bool outOfBounds = false;
+	if (x < 100 && 230 < y < 480)
 	{
-		return this->spriteSheet;
+		cout << "Box DL" << endl;
+		outOfBounds = true;
 	}
-
-	void Enemy::setCollided(int tf)
+	else if (x < 350 && y < 225)
 	{
-		this->collided = tf;
+		cout << "Box UL" << endl;
+		outOfBounds = true;
 	}
-
-	//bool Enemy::getWasAttacking()
-	//{
-	//	return this->wasAttacking;
-	//}
-
-	//void Enemy::setWasAttacking(int tf)
-	//{
-	//	this->wasAttacking = tf;
-	//}
-
-	//bool Enemy::getIsAttacking()
-	//{
-	//	return this->isAttacking;
-	//}
-
-	//void Enemy::setIsAttacking(int tf)
-	//{
-	//	this->isAttacking = tf;
-	//}
-
-	int Enemy::attack()
+	else if (x > 150 && 260 < y)
 	{
-		//animate attack
-		std::random_device rd;
-
-		std::default_random_engine *generator = new std::default_random_engine(rd());
-		std::uniform_int_distribution<int> attackDIST(0, 10);
-		
-		int randNum = attackDIST(*generator);
-
-		return attackDamage * randNum/2.5;
+		cout << "Box DR" << endl;
+		outOfBounds = true;
 	}
-
-	void Enemy::recevieDamage(int damage)
+	else if (x > 400 && 155 < y)
 	{
-		this->health -= damage;
-		cout << damage << " Amount of damage enemy has revcieved! Remaining enemy health: " << this->health << endl;
-	
-		this->death();
+		cout << "Box ML" << endl;
+		outOfBounds = true;
 	}
-
-	bool Enemy::death() const
+	else if (x > 435 && y < 155)
 	{
-		// death animation
-		bool dead = false;
-		if (this->health <= 0)
-		{
-			dead = true;
-		}
-		
-		return dead;
+		cout << "Box UR" << endl;
+		outOfBounds = true;
 	}
-
-	int Enemy::getHealth()
-	{
-		return this->health;
+	else {
+		cout << "No Box x:" << x << "y:" << y << endl;
 	}
+	return outOfBounds;
+}

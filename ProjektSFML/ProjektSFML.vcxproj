@@ -148,25 +148,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Enemy2.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="HighScore.cpp" />
+    <ClCompile Include="PowerUp.cpp" />
+    <ClCompile Include="SmokeSprite.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Enemy2.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="HighScore.h" />
+    <ClInclude Include="PowerUp.h" />
+    <ClInclude Include="SmokeSprite.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Image\16bitmap.jpg" />
+    <Image Include="Image\cloud1.jpg" />
     <Image Include="Image\goblinsword.png" />
     <Image Include="Image\goblinSwordBlue.png" />
+    <Image Include="Image\goblinSwordRed.png" />
     <Image Include="Image\objects.png" />
+    <Image Include="Image\smoke1.png" />
+    <Image Include="Image\Smoke15Frames.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

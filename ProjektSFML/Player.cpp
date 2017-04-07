@@ -24,18 +24,28 @@ Player::Player(): Entity()
 	setEHealth(15);
 	health = getEHealth();
 
-	
+	this->isPoisoned = false;
+	/*smokeTex.loadFromFile("Image/goblinSwordBlue.png");
+	smokeSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+	smokeSprite.setPosition(sf::Vector2f(111, 400));*/
 }
 
 
 void Player::draw(sf::RenderTarget & target, sf::RenderStates states) const
 {
 	target.draw(spriteSheet, states);
+	//if (this->isPoisoned)
+	//{
+	//	//float xx = this->spriteSheet.getPosition().x; 
+	//	//float yy = this->spriteSheet.getPosition().y;
+	//	
+	//	target.draw(smokeSprite, states);
+	//}
 }
 
 Player::~Player()
 {
-	
+	//delete this;
 }
 
 void Player::Update(float dt)
@@ -112,7 +122,8 @@ void Player::Update(float dt)
 		//{
 		//	isAttacking = true;
 		//}
-
+		//smokeSprite.move(direction * playerSpeed * dt);//spriteSheet.getPosition());
+		//smokeSprite.rotate(10);
 		if (isAttacking)
 		{
 			this->attack();
@@ -149,6 +160,29 @@ void Player::setCollided(int tf)
 //{
 //	this->isAttacking = tf;
 //}
+int Player::poisonTick(int ticks)
+{
+	//int tick = ticks;
+	if (ticks-- == 0)
+	{
+		return 0;
+	}
+
+	return ticks;
+}
+void Player::poison(int ticks, int damage)
+{
+	if (this->poisonTick(ticks) != 0)
+	{
+		this->recevieDamage(damage);	
+		this->isPoisoned = true;
+		cout << "Player is poisoned! \nDamage taken: " << damage << endl << "Player health remaining: " << this->health << endl;
+	}
+	else
+	{
+		this->isPoisoned = false;
+	}
+}
 
 int Player::attack()
 {
@@ -186,4 +220,9 @@ int Player::getHealth() const
 void Player::setHealth()
 {
 	this->health += 5;
+}
+
+void Player::pushBack(float x, float y)
+{
+	spriteSheet.setPosition(x, y);
 }

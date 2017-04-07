@@ -1,48 +1,41 @@
-#ifndef ENEMY_H
-#define ENEMY_H
-
+#pragma once
 #include "Entity.h"
 #include <time.h>
-class Enemy :
+#include <random>
+
+class Enemy2 :
 	public Entity
 {
 private:
 	sf::Sprite spriteSheet;
-	sf::IntRect rectSourceSprite;
-	float enemySpeed;
 	sf::Texture texture;
 
 	sf::Vector2i currentKeyFrame;
 	sf::Vector2i keyFrameSize;
 	int spriteSheetWidth;
-//	int spriteSheetHeight;
 	float animationSpeed;
 	float keyFrameDuration;
 
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
+
 	int attackDamage;
+	int ticks;
 	int health;
-	bool collided = false;
-	bool wasAttacking = false;
-	bool isAttacking = false;
+
 	bool bounds(int x, int y);
 public:
-	Enemy();
-	Enemy(int nr);
-	~Enemy();
-	void move(float dt);
+	Enemy2();
+	~Enemy2();
+
 	void Update(float dt);
+
 	sf::Sprite getSpriteSheet();
-	void setCollided(int tf);
-	//bool getWasAttacking();
-	//void setWasAttacking(int tf);
-	//bool getIsAttacking();
-	//void setIsAttacking(int tf);
+
 	int attack();
 	void recevieDamage(int damage);
 	bool death() const;
 	int getHealth();
+	int getTicks();
 };
 
-#endif // !ENEMY_H
